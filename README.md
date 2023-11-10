@@ -9,6 +9,13 @@
 - javascript , html, css
 
 
+function
+- show notice
+- add notice   
+- detail notice (Proceeding)
+- delete notice
+- update notice
+
 ## Project Setup
 
 ```sh
