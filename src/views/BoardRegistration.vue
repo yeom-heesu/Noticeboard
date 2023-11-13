@@ -15,8 +15,8 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['addResBody','addCount']),
-        ...mapMutations(['setResBody']),
+        ...mapActions(['addResBody','addCheck']),
+        ...mapMutations(['beforeAdd','beforeaddCheck']),
         goToPrePage() { // 이전페이지로 이동
             this.$router.go(-1);
         },
@@ -26,10 +26,10 @@ export default {
             temp.contents = this.contents;
             temp.registed = this.registed;
             temp.title = this.title;
-            this.setResBody(temp);
-
+            this.beforeaddCheck(false);
+            this.beforeAdd(temp);
             this.$router.go(-1);
-        }
+        },
     },
     computed: {
         ...mapGetters(['getResBody'])

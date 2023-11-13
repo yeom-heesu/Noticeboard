@@ -2,6 +2,7 @@ import {createStore, mapMutations} from "vuex";
 
 export default createStore({
     state: {
+        check : [],
         resBody: {
             "totalCount": 1,
             "totalPages": 1,
@@ -11,27 +12,38 @@ export default createStore({
                     title: "테스트입니다.",
                     username: "관리자",
                     registed: "2023-01-01",
-                    contents: "룰루랄라루"
+                    contents: "룰루랄라루",
                 }
             ]
         },
     },
     mutations: {
-        setResBody(state,value){
+        beforeAdd(state,value){
             value.no = state.resBody.totalCount;
-           state.resBody.board.push(value);
+            state.resBody.board.push(value);
             state.resBody.totalCount ++;
         },
-        addCnt(state,value){
-            state.resBody.totalCount =+ value ;
+        beforeDel(state,value){
+            state.resBody.board.forEach((item,index)=>{
+                if (item.no === value){
+                    state.resBody.board.splice(index,1);
+                }
+            })
+            state.resBody.totalCount --;
+        },
+        beforeaddCheck(state,value){
+            state.check.push(value);
         }
     },
     actions: {
         addResBody({commit}){
-            commit('setResBody');
+            commit('beforeAdd');
         },
-        addCount({commit}){
-            commit('addCnt');
+        deleteResBody({commit}){
+            commit('beforeDel');
+        },
+        addCheck({commit}){
+            commit('beforeaddCheck');
         }
     },
     getters: {

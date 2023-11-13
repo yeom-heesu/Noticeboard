@@ -5,9 +5,13 @@ export default {
 </script>
 
 <template>
-  <footer>푸터</footer>
+  <footer class = "footerstyle">푸터</footer>
 </template>
 
 <style scoped>
-
+.footerstyle{
+    background-color: gray;
+    height: 4.7vh;
+    width: 100%;
+}
 </style>

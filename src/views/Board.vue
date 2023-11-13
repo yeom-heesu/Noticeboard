@@ -8,24 +8,35 @@ export default {
     data() {
         return{
             allSelected : false,
-            check : []
+            check : [],
+            liveExampleVisible:false,
+            visibleLiveDemo: false,
         }
     },
     methods: {
-
+        ...mapMutations(['beforeDel']),
+        ...mapActions(['deleteResBody']),
         checkAll() {
-            // if (state.value.allSelected) {
-            //     for (let i = 0; i < state.value.resBody.totalCount; i++) {
-            //         // for (let i in state.value.resBody.books) {
-            //         state.value.check[i] = true;
-            //     }
-            // } else {
-            //     for (let i = 0; i < state.value.resBody.totalCount; i++) {
-            //         // for (let i in state.value.resBody.books) {
-            //         state.value.check[i] = false;
-            //     }
-            // }
+            if (this.allSelected) {
+                for (let i = 0; i < this.getResBody.totalCount; i++) {
+                    this.check[i] = true;
+                }
+            } else {
+                for (let i = 0; i < this.getResBody.totalCount; i++) {
+                    this.check[i] = false;
+                }
+            }
 
+        },
+        deletes() {
+            let len = this.check.length;
+            for (let i = 0; i < len; i++ ){
+                if (this.check[i]){
+                    this.beforeDel(i);
+                }
+            }
+
+            this.liveExampleVisible =false;
         },
         reloadPage(pageNumber) {
         //
@@ -56,15 +67,11 @@ export default {
 
             <div class="table-responsive" style="padding-left: 100px ">
                 <router-link to="board/registration">
-                    <CButton color="info">등록</CButton>
+                    <CButton color="primary">등록</CButton>
                 </router-link>
                 <CTable striped>
-<!--                <table class="table align-middle dt-responsive nowrap w-100 table-check"-->
-<!--                       id="job-list">-->
-<!--                    <thead>-->
                     <CTableHead>
                         <CTableRow>
-<!--                    <tr>-->
 
                         <th style="width: 20px">
                             <div class="form-check font-size-16 align-middle">
@@ -77,21 +84,15 @@ export default {
                             <CTableHeaderCell scope="col">제목</CTableHeaderCell>
                             <CTableHeaderCell scope="col">작성자</CTableHeaderCell>
                             <CTableHeaderCell scope="col">내용</CTableHeaderCell>
-<!--                        <th class="align-middle">No</th>-->
-<!--                        <th class="align-middle">제목</th>-->
-<!--                        <th class="align-middle">작성자</th>-->
-<!--                        <th class="align-middle">등록일시</th>-->
+
                         </CTableRow>
-<!--                    </tr>-->
                     </CTableHead>
-<!--                    </thead>-->
                     <CTableBody>
-                    <!--          <tbody>-->
-                    <CTableRow v-for="data in getResBody.board" :key="data.no">
+                    <CTableRow v-for="data in getResBody.board" :key="data.no" >
                         <CTableDataCell>
-                            <div class="form-check font-size-16">
-                                <input class="form-check-input" type="checkbox" :id="check[data.no]"
-                                       :checked= check[data.no] />
+                            <div class="form-check font-size-16" >
+                                <input class="form-check-input" type="checkbox" :id=this.check[data.no] v-model="check[data.no]"
+                                       :checked= this.check[data.no] />
                             </div>
                         </CTableDataCell>
 
@@ -104,9 +105,22 @@ export default {
                     </CTableRow>
                     </CTableBody>
 
-<!--                </table>-->
                 </CTable>
+                <CButton color="danger" @click="() => {liveExampleVisible =true}">삭제</CButton>
+                <CModal :keyboard="false" :visible="liveExampleVisible">
+                    <CModalHeader>
+                        <CModalTitle>삭제 하시겠습니까?</CModalTitle>
+                    </CModalHeader>
+                    <CModalBody>{{check}}</CModalBody>
+                    <CModalFooter>
+                        <CButton color="primary" @click="() => {liveExampleVisible =false}">아니오</CButton>
+                        <CButton color="secondary"  @click="deletes" >예</CButton>
+                    </CModalFooter>
+                </CModal>
+
+
             </div>
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="pagination pagination-rounded justify-content-center mt-2 mb-5">
@@ -120,7 +134,9 @@ export default {
                         </CPagination>
                     </div>
                 </div>
+
             </div>
+
         </div>
     </Container>
 </template>

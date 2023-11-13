@@ -15,7 +15,7 @@ export default {
 </script>
 <template>
     <pageHeader/>
-    <div class="wrapper d-flex flex-column bg-light" style="overflow: hidden; min-height: 85vh">
+    <div class="wrapper d-flex flex-column bg-light" style="overflow: hidden; min-height: 90vh">
         <slot style="overflow: hidden"/>
     </div>
     <pageFooter/>
