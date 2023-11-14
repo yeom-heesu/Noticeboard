@@ -40,12 +40,13 @@ export default {
     <Container>
         <CCard>
             <CCardBody>
-                <div class="mb-3 g-3 ">
+
+                <div class="mb-3 col-xxl-8 col-lg-10"  >
 
                     <label>제목</label>
                     <div>
                         <CFormInput
-                                class="mb-3"
+                                class="mb-3 g-3"
                                 v-model="title"
                                 placeholder="제목을 입력하세요"
                                 id="title"
@@ -77,9 +78,9 @@ export default {
 
                     </div>
 
-                    <div class="hstack gap-2">
-                        <CButton color="primary" @click="registration">등록</CButton>
-                        <CButton color="danger" type="reset" @click="goToPrePage">취소</CButton>
+                    <div class="hstack gap-2"  style="padding-top: 1%; display: flex;justify-content: center">
+                        <CButton color="secondary" @click="registration">등록</CButton>
+                        <CButton color="secondary" type="reset" @click="goToPrePage">취소</CButton>
                     </div>
 
                 </div>

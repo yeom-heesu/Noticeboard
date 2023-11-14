@@ -39,6 +39,7 @@ export default createStore({
                 state.resBody.board[i].check = value;
             }
         }
+
     },
     actions: {
         addResBody({commit}) {
@@ -50,6 +51,7 @@ export default createStore({
         changeCheck({commit}){
             commit('beforeCheck');
         }
+
     },
     getters: {
         getResBody(state) {

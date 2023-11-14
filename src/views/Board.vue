@@ -12,17 +12,39 @@ export default {
             allSelected : false,
             liveExampleVisible:false,
             visibleLiveDemo: false,
-            check : [false]
+            check : [false],
+            temp : [],
+            totalpages : 0,
+            resBody : []
         }
     },
     mounted() {
         // redirect request
         this.check = [];
+        let res = [];
+        let cnt = 0;
         this.getResBody.board.forEach((item) => {
-            // console.log(item);
-             this.check.push(item.check);
+            res.push(item);
+            cnt++ ;
+            if (this.getResBody.board.length == cnt) {
+                // 마지막값이면
+                console.log(res);
+                this.temp.push(res);
+                this.totalpages ++ ;
+            }
+            else if (cnt % 10 == 0 ){
+                // 페이지 추가
+                this.temp.push(res);
+                this.totalpages ++;
+                res = [];
+
+            }
+
+
+            this.check.push(item.check);
         })
-        console.log(this.check);
+        console.log(this.temp);
+        // console.log(this.check);
     },
     methods: {
         ...mapMutations(['beforeDel','beforeCheck']),
@@ -54,17 +76,19 @@ export default {
             this.liveExampleVisible =false;
         },
         reloadPage(pageNumber) {
-        //
-        //     if (pageNumber == 1) {
-        //         state.value.resBody = state.value.resDummy1;
-        //     } else {
-        //         state.value.resBody = state.value.resDummy2;
-        //     }
-        //     for (let i = 0; i < state.value.resBody.totalCount; i++) {
-        //         state.value.check[i] = false;
-        //     }
-        //     state.value.allSelected = false;
-        // }
+            let idx = pageNumber -1 ;
+
+            this.resBody = this.temp[idx];
+            // if (pageNumber == 1) {
+            //     this.resBody = this.resDummy1;
+            // } else {
+            //     this.resBody = this.resDummy2;
+            // }
+            // for (let i = 0; i < state.value.resBody.totalCount; i++) {
+            //     state.value.check[i] = false;
+            // }
+            // state.value.allSelected = false;
+            //
     }},
     computed: {
         ...mapGetters(['getResBody'])
@@ -79,11 +103,13 @@ export default {
 <template>
     <Container>
         <div class="card-body border-bottom">
+            <div style="padding : 5% 5% 0 10%; ">
+            <router-link to="board/registration" >
+                <CButton color="secondary" >등록</CButton>
+            </router-link>
+            </div>
+            <div class="table-responsive" style="padding : 3% 10% 0 10%; ">
 
-            <div class="table-responsive" style="padding-left: 100px ">
-                <router-link to="board/registration">
-                    <CButton color="primary" >등록</CButton>
-                </router-link>
 
                 <CTable striped>
                     <CTableHead>
@@ -104,7 +130,7 @@ export default {
                         </CTableRow>
                     </CTableHead>
                     <CTableBody>
-                    <CTableRow v-for="data in getResBody.board" :key="data.no" >
+                    <CTableRow v-for="data in this.resBody" :key="data.no" >
                         <CTableDataCell>
                             <div class="form-check font-size-16" >
                                 <input class="form-check-input" type="checkbox" :id=this.check[data.no] v-model="this.check[data.no]"
@@ -117,12 +143,11 @@ export default {
                         <CTableDataCell>{{ data.username }}</CTableDataCell>
                         <CTableDataCell>{{ data.contents }}</CTableDataCell>
 
-                        {{data.check}}
                     </CTableRow>
                     </CTableBody>
 
                 </CTable>
-                <CButton color="danger" @click="() => {liveExampleVisible =true}">삭제</CButton>
+                <CButton color="secondary" @click="() => {liveExampleVisible =true}">삭제</CButton>
                 <CModal :keyboard="false" :visible="liveExampleVisible">
                     <CModalHeader>
                         <CModalTitle>삭제 하시겠습니까?</CModalTitle>
@@ -138,17 +163,14 @@ export default {
             </div>
 
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="pagination pagination-rounded justify-content-center mt-2 mb-5">
-                        <CPagination aria-label="Page navigation example">
-                            <CPaginationItem href="#">Previous</CPaginationItem>
-
-                            <li class="page-item" v-for="data in getResBody.totalPages" :key="data">
-                                <CPaginationItem @click="reloadPage(data)">{{ data }}</CPaginationItem>
-                            </li>
-                            <CPaginationItem href="#">Next</CPaginationItem>
-                        </CPagination>
-                    </div>
+                <div class="col-lg-12" style="display: flex;justify-content: center"  >
+                    <CButtonToolbar class="mb-3" role="group" aria-label="Toolbar with button groups">
+                        <CButtonGroup class="me-2" role="group" aria-label="First group">
+                            <div class="page-item" v-for="data in this.totalpages" :key="data">
+                            <CButton color="secondary" variant="outline" @click="reloadPage(data)">{{ data }}</CButton>
+                            </div>
+                        </CButtonGroup>
+                    </CButtonToolbar>
                 </div>
 
             </div>
@@ -157,5 +179,4 @@ export default {
     </Container>
 </template>
 <style scoped>
-
 </style>
