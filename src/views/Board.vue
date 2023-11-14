@@ -2,37 +2,61 @@
 import {computed, ref} from 'vue';
 import Container from "@/components/container.vue";
 import {mapGetters, mapState, mapActions, mapMutations} from "vuex";
+/*import {useRouter,useRoute} from "vue-router";
 
+const router = useRouter();*/
 
 export default {
     data() {
         return{
             allSelected : false,
-            check : [],
             liveExampleVisible:false,
             visibleLiveDemo: false,
+            check : [false]
         }
     },
+    mounted() {
+        // redirect request
+        console.log("this " + this.check);
+        this.check = [];
+        this.getResBody.board.forEach((item) => {
+             this.check.push(item.check);
+        })
+
+    },
     methods: {
-        ...mapMutations(['beforeDel']),
-        ...mapActions(['deleteResBody']),
+        ...mapMutations(['beforeDel','beforeCheck']),
+        ...mapActions(['deleteResBody','changeCheck']),
         checkAll() {
             if (this.allSelected) {
-                for (let i = 0; i < this.getResBody.totalCount; i++) {
+                for (let i = 0; i < this.check.length; i++) {
                     this.check[i] = true;
                 }
+                this.beforeCheck(true);
             } else {
-                for (let i = 0; i < this.getResBody.totalCount; i++) {
+                for (let i = 0; i < this.check.length; i++) {
                     this.check[i] = false;
                 }
+                this.beforeCheck(false);
             }
 
         },
+        // async registedItem(){
+        //     await this.$router.push({
+        //         path: 'board/registration'
+        //     }).then(function (response){
+        //         // if (this.$route && this.$route.query.resCode == 1){
+        //         //     this.check.push(false);
+        //         //     console.log(this.check);
+        //         // }
+        //     })
+        // },
         deletes() {
             let len = this.check.length;
             for (let i = 0; i < len; i++ ){
                 if (this.check[i]){
                     this.beforeDel(i);
+                    this.check.splice(i,1);
                 }
             }
 
@@ -67,8 +91,9 @@ export default {
 
             <div class="table-responsive" style="padding-left: 100px ">
                 <router-link to="board/registration">
-                    <CButton color="primary">등록</CButton>
+                    <CButton color="primary" >등록</CButton>
                 </router-link>
+
                 <CTable striped>
                     <CTableHead>
                         <CTableRow>
@@ -91,7 +116,7 @@ export default {
                     <CTableRow v-for="data in getResBody.board" :key="data.no" >
                         <CTableDataCell>
                             <div class="form-check font-size-16" >
-                                <input class="form-check-input" type="checkbox" :id=this.check[data.no] v-model="check[data.no]"
+                                <input class="form-check-input" type="checkbox" :id=this.check[data.no] v-model="this.check[data.no]"
                                        :checked= this.check[data.no] />
                             </div>
                         </CTableDataCell>
@@ -101,7 +126,7 @@ export default {
                         <CTableDataCell>{{ data.username }}</CTableDataCell>
                         <CTableDataCell>{{ data.contents }}</CTableDataCell>
 
-
+                        {{data.check}}
                     </CTableRow>
                     </CTableBody>
 
@@ -111,7 +136,7 @@ export default {
                     <CModalHeader>
                         <CModalTitle>삭제 하시겠습니까?</CModalTitle>
                     </CModalHeader>
-                    <CModalBody>{{check}}</CModalBody>
+                    <CModalBody>{{this.check}}</CModalBody>
                     <CModalFooter>
                         <CButton color="primary" @click="() => {liveExampleVisible =false}">아니오</CButton>
                         <CButton color="secondary"  @click="deletes" >예</CButton>

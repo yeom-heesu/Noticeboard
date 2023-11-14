@@ -15,8 +15,8 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['addResBody','addCheck']),
-        ...mapMutations(['beforeAdd','beforeaddCheck']),
+        ...mapActions(['addResBody']),
+        ...mapMutations(['beforeAdd']),
         goToPrePage() { // 이전페이지로 이동
             this.$router.go(-1);
         },
@@ -26,7 +26,6 @@ export default {
             temp.contents = this.contents;
             temp.registed = this.registed;
             temp.title = this.title;
-            this.beforeaddCheck(false);
             this.beforeAdd(temp);
             this.$router.go(-1);
         },

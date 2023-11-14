@@ -1,8 +1,7 @@
-import {createStore, mapMutations} from "vuex";
+import {createStore} from "vuex";
 
 export default createStore({
     state: {
-        check : [],
         resBody: {
             "totalCount": 1,
             "totalPages": 1,
@@ -13,41 +12,47 @@ export default createStore({
                     username: "관리자",
                     registed: "2023-01-01",
                     contents: "룰루랄라루",
+                    check: false
                 }
             ]
         },
     },
     mutations: {
-        beforeAdd(state,value){
+        beforeAdd(state, value) { // add item
             value.no = state.resBody.totalCount;
+            value.check = false;
             state.resBody.board.push(value);
-            state.resBody.totalCount ++;
+            state.resBody.totalCount++;
         },
-        beforeDel(state,value){
-            state.resBody.board.forEach((item,index)=>{
-                if (item.no === value){
-                    state.resBody.board.splice(index,1);
+        beforeDel(state, value) {
+            let cnt = 0;
+            state.resBody.board.forEach((item, index) => {
+                if (item.no === value) {
+                    state.resBody.board.splice(index, 1);
+                    cnt++;
                 }
             })
-            state.resBody.totalCount --;
+            state.resBody.totalCount -= cnt;
         },
-        beforeaddCheck(state,value){
-            state.check.push(value);
+        beforeCheck(state, value) {
+            for (let i = 0; i < this.getResBody.board.length; i++) {
+                this.getResBody.board[i].check = value;
+            }
         }
     },
     actions: {
-        addResBody({commit}){
+        addResBody({commit}) {
             commit('beforeAdd');
         },
-        deleteResBody({commit}){
+        deleteResBody({commit}) {
             commit('beforeDel');
         },
-        addCheck({commit}){
-            commit('beforeaddCheck');
+        changeCheck({commit}){
+            commit('beforeCheck');
         }
     },
     getters: {
-        getResBody(state){
+        getResBody(state) {
             return state.resBody;
         }
 
