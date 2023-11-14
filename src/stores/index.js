@@ -35,8 +35,8 @@ export default createStore({
             state.resBody.totalCount -= cnt;
         },
         beforeCheck(state, value) {
-            for (let i = 0; i < this.getResBody.board.length; i++) {
-                this.getResBody.board[i].check = value;
+            for (let i = 0; i < state.resBody.board.length; i++) {
+                state.resBody.board[i].check = value;
             }
         }
     },

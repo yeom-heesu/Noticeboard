@@ -17,12 +17,12 @@ export default {
     },
     mounted() {
         // redirect request
-        console.log("this " + this.check);
         this.check = [];
         this.getResBody.board.forEach((item) => {
+            // console.log(item);
              this.check.push(item.check);
         })
-
+        console.log(this.check);
     },
     methods: {
         ...mapMutations(['beforeDel','beforeCheck']),
@@ -41,19 +41,10 @@ export default {
             }
 
         },
-        // async registedItem(){
-        //     await this.$router.push({
-        //         path: 'board/registration'
-        //     }).then(function (response){
-        //         // if (this.$route && this.$route.query.resCode == 1){
-        //         //     this.check.push(false);
-        //         //     console.log(this.check);
-        //         // }
-        //     })
-        // },
+
         deletes() {
             let len = this.check.length;
-            for (let i = 0; i < len; i++ ){
+            for (let i = len-1; i >= 0; i-- ){
                 if (this.check[i]){
                     this.beforeDel(i);
                     this.check.splice(i,1);
