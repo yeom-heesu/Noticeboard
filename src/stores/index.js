@@ -28,14 +28,12 @@ export default createStore({
         },
         beforeDel(state, value) {
             let cnt = 0;
-            console.log(value);
             state.resBody.board.forEach((item, index) => {
                 if (item.no === value) {
                     state.resBody.board.splice(index, 1);
                     cnt++;
                 }
             })
-            console.log("delete in ");
 
             // state.resBody.totalCount -= cnt;
         },

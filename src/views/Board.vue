@@ -22,8 +22,7 @@ export default {
     mounted() {
         // redirect request
         this.changedRes(this.getResBody.board);
-        console.log(this.check);
-        console.log('mounted');
+
     },
     methods: {
         ...mapMutations(['beforeDel','beforeCheck']),
@@ -63,14 +62,13 @@ export default {
         reloadPage(pageNumber) {
             let idx = pageNumber -1 ;
             this.resBody = this.temp[idx];
-            console.log("reload");
+
          },
         changedRes(list){
             this.temp = [];
             this.check = [];
             let res = [];
             let cnt = 0;
-            console.log(list)
             list.forEach((item) => {
                 res.push(item);
                 cnt++ ;

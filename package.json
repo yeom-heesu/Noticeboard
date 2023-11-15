@@ -24,6 +24,7 @@
     "bootstrap-vue-3": "^0.1.0",
     "core-js": "^3.31.1",
     "dotenv": "^16.3.1",
+    "jwt-decode": "^4.0.0",
     "metismenujs": "^1.4.0",
     "scrollreveal": "^4.0.9",
     "simplebar-vue": "^2.3.3",
