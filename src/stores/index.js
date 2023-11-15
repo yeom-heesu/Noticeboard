@@ -1,4 +1,5 @@
 import {createStore} from "vuex";
+import {indexOf} from "core-js/internals/array-includes";
 
 export default createStore({
     state: {
@@ -23,16 +24,20 @@ export default createStore({
             value.check = false;
             state.resBody.board.push(value);
             state.resBody.totalCount++;
+
         },
         beforeDel(state, value) {
             let cnt = 0;
+            console.log(value);
             state.resBody.board.forEach((item, index) => {
                 if (item.no === value) {
                     state.resBody.board.splice(index, 1);
                     cnt++;
                 }
             })
-            state.resBody.totalCount -= cnt;
+            console.log("delete in ");
+
+            // state.resBody.totalCount -= cnt;
         },
         beforeCheck(state, value) {
             for (let i = 0; i < state.resBody.board.length; i++) {
