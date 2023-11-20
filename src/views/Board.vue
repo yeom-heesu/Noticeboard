@@ -40,24 +40,39 @@ export default {
                 this.beforeCheck(false);
             }
 
-
         },
 
         deletes() {
+            let isChecked = false;       //체크된 값이 있는지 여부 확인
+            this.check.forEach((item,index)=>{
+                console.log(this.check.length);
+                console.log(index);
+                if (item){
+                    isChecked = true;
+                }
+                else if (this.check.length-1 == index) {
+                    isChecked = false;
+                }
+            });
+
             let len = this.check.length;
             let target = this.getResBody.board;
-            for (let i = len-1; i >= 0; i-- ){
-                if (this.check[i]){
-                    this.beforeDel(target[i].no);
-                    this.check.splice(i,1);
-                    this.totalpages -- ;
 
+            if (isChecked){
+                for (let i = len-1; i >= 0; i-- ){
+                    if (this.check[i]){
+                        this.beforeDel(target[i].no);
+                        this.check.splice(i,1);
+                        this.totalpages -- ;
+
+                    }
                 }
+
+
+                this.changedRes(this.getResBody.board);
+                console.log(this.getResBody.totalpages);
             }
-
             this.liveExampleVisible =false;
-            this.changedRes(this.getResBody.board);
-
         },
         reloadPage(pageNumber) {
             let idx = pageNumber -1 ;

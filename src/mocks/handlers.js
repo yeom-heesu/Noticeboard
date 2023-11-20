@@ -9,7 +9,6 @@ const handlers = [
             })
         )
 })
-
 ]
 export default handlers;
 export const worker = setupWorker(...handlers);
